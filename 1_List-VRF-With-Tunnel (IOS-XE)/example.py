@@ -15,7 +15,6 @@ password = "example"
 # Output Excel
 output_file = "example.xlsx"
 
-
 # Disable insecure request warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -53,7 +52,7 @@ try:
             for interface in interfaces:
                 num_tunnel = interface.replace("Tunnel", "").replace("tunnel", "")
                 time.sleep(0.5)
-                
+
                 url_tunnel = f"https://" + IP_Device + "/restconf/data/Cisco-IOS-XE-native:native/interface/Tunnel={num_tunnel}"
                 res_tunnel = requests.get(url_tunnel, auth=(username, password), headers=headers, verify=False)
                 res_tunnel.raise_for_status()
@@ -104,7 +103,7 @@ for data_row in data_rows:
 
 previous_vrf_name = ""
 start_row = 2
-end_row = 2  
+end_row = 2 
 for row in sheet.iter_rows(min_row=2, min_col=1, max_col=1):
     current_vrf_name = row[0].value
     if current_vrf_name == previous_vrf_name:

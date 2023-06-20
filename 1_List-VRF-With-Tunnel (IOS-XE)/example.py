@@ -1,5 +1,6 @@
 import json
 import requests
+import time
 import pandas as pd
 from openpyxl import Workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
@@ -43,6 +44,7 @@ try:
     data_df = pd.DataFrame(columns=["VRF name", "Interfaces", "IP", "Mask", "Source Tunnel", "Destination Tunnel"])
 
     for entry in vrf_entries:
+
         vrf_name = entry["vrf-name"]
         interfaces = entry.get("interface", [])
 
@@ -50,6 +52,8 @@ try:
         if interfaces:
             for interface in interfaces:
                 num_tunnel = interface.replace("Tunnel", "").replace("tunnel", "")
+                time.sleep(0.5)
+                
                 url_tunnel = f"https://" + IP_Device + "/restconf/data/Cisco-IOS-XE-native:native/interface/Tunnel={num_tunnel}"
                 res_tunnel = requests.get(url_tunnel, auth=(username, password), headers=headers, verify=False)
                 res_tunnel.raise_for_status()
@@ -69,6 +73,9 @@ try:
                 {"VRF name": vrf_name, "Interfaces": None, "IP": None, "Mask": None, "Source Tunnel": None, "Destination Tunnel": None},
                 ignore_index=True
             )
+
+        print(f"{vrf_name} - Done\n")
+
 
 except json.JSONDecodeError as e:
     print("Failed to decode JSON response:", e)

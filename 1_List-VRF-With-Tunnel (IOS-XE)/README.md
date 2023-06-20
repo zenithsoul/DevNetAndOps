@@ -12,7 +12,7 @@ To install the required Python packages, run the following command:
 
 Your device must meet the following criteria:
 
-- Support **IOS-XE Gibraltar 16.11.1** or later (Tested on IOS-XE 17.3.1)
+- **Support IOS-XE Gibraltar 16.11.1 or later (Tested on IOS-XE 17.3.1)**
 - Enable RESTCONF on IOS-XE. Learn how to enable it here. <https://developer.cisco.com/docs/ios-xe/#!enabling-restconf-on-ios-xe>
 - Ensure that the device runs "RESTCONF" or add the following configuration:
 

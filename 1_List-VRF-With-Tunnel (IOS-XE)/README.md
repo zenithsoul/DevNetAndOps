@@ -5,6 +5,16 @@ Here's an example of coding for network operations that gathers information for 
 ## Requirement
 
 > pip install -r requirements.txt
+>
+> Support IOS-XE Gibraltar 16.11.1 or later (I test on IOS-XE 17.3.1)
+>
+> Enabling RESTCONF on IOS-XE
+> https://developer.cisco.com/docs/ios-xe/#!enabling-restconf-on-ios-xe
+>
+> and check the device must run "RESTCONF" or add configure
+>
+> Router(config)#resetconf
+>
 
 ## Before run the script
 

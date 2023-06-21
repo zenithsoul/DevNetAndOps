@@ -30,24 +30,28 @@ response.raise_for_status()  # Raise an exception if the request was unsuccessfu
 if response.status_code == 200:
     json_data = response.json()
 
-    # Extract the data
-    names = [item['name'] for item in json_data['Cisco-IOS-XE-native:Tunnel']]
-    ip_addresses = [
-        {
-            'IP': item['ip']['address']['primary']['address'],
-            'Mask': item['ip']['address']['primary']['mask']
-        }
-        for item in json_data['Cisco-IOS-XE-native:Tunnel']
-    ]
-    sources = [item['Cisco-IOS-XE-tunnel:tunnel']['source'] for item in json_data['Cisco-IOS-XE-native:Tunnel']]
-    destinations = [item['Cisco-IOS-XE-tunnel:tunnel']['destination-config']['ipv4'] for item in json_data['Cisco-IOS-XE-native:Tunnel']]
-    forwarding_words = [item['ip']['vrf']['forwarding']['word'] if 'ip' in item and 'vrf' in item['ip'] and 'forwarding' in item['ip']['vrf'] else "-" for item in json_data['Cisco-IOS-XE-native:Tunnel']]
+    # Initialize lists
+    names = []
+    ip_addresses = []
+    masks = []
+    sources = []
+    destinations = []
+    forwarding_words = []
+
+    # Iterate once
+    for item in json_data['Cisco-IOS-XE-native:Tunnel']:
+        names.append(item['name'])
+        ip_addresses.append(item['ip']['address']['primary']['address'])
+        masks.append(item['ip']['address']['primary']['mask'])
+        sources.append(item['Cisco-IOS-XE-tunnel:tunnel']['source'])
+        destinations.append(item['Cisco-IOS-XE-tunnel:tunnel']['destination-config']['ipv4'])
+        forwarding_words.append(item['ip']['vrf']['forwarding']['word'] if 'ip' in item and 'vrf' in item['ip'] and 'forwarding' in item['ip']['vrf'] else "-")
 
     # Create a DataFrame from the extracted data
     df = pd.DataFrame({
         'Tunnel Number': names,
-        'IP Address': [ip['IP'] for ip in ip_addresses],
-        'Mask': [ip['Mask'] for ip in ip_addresses],
+        'IP Address': ip_addresses,
+        'Mask': masks,
         'Source': sources,
         'Destination': destinations,
         'VRF': forwarding_words
@@ -92,7 +96,6 @@ if response.status_code == 200:
         for cell in row:
             cell.alignment = Alignment(horizontal="center", vertical="center")
 
-    
     workbook.save(output_file)
 
     print("Data has been written to " + output_file)

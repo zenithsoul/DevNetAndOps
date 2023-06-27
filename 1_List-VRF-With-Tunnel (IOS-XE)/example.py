@@ -53,7 +53,7 @@ try:
                 num_tunnel = interface.replace("Tunnel", "").replace("tunnel", "")
                 time.sleep(0.5)
 
-                url_tunnel = f"https://" + IP_Device + "/restconf/data/Cisco-IOS-XE-native:native/interface/Tunnel={num_tunnel}"
+                url_tunnel = f"https://" + IP_Device + "/restconf/data/Cisco-IOS-XE-native:native/interface/Tunnel=" + num_tunnel
                 res_tunnel = requests.get(url_tunnel, auth=(username, password), headers=headers, verify=False)
                 res_tunnel.raise_for_status()
                 data_tunnel = res_tunnel.json()
